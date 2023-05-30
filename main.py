@@ -1,12 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 import sv_ttk
-from window import Window
 
 root = tk.Tk()
 root.geometry("800x500")
-
-win = Window(root)
 
 url = tk.StringVar()
 
@@ -55,6 +52,38 @@ url_entry.configure(foreground="gray")
 # event checkers.
 url_entry.bind("<FocusIn>", on_entry_click)
 url_entry.bind("<FocusOut>", on_focusout)
+
+# seperator for settings frame.
+divider = ttk.Separator(settings_frame, orient="horizontal")
+divider.grid(row=1, column=0, padx=0, pady=10, sticky="ew")
+
+selection_list = []
+
+def on_option_selected(event):
+    print(options)
+    selected_option = value.get()
+
+    if selected_option in selection_list:
+        options[options.index(selected_option)] = selected_option.split()[1]
+    else:
+        selection_list.append(f" \u2713 {selected_option}")
+        options[options.index(selected_option)] = f" \u2713 {selected_option}"
+
+    dropdown['menu'].delete(0, 'end')
+
+    for option in options:
+        dropdown['menu'].add_command(label=option, command=tk._setit(options[0], option))
+
+    value.set("Selected option:")
+    print("Selected option:", selected_option)
+    print(options)
+
+value = tk.StringVar()
+options = ["Select elements  ", "option-02", "option-03"]
+
+dropdown = ttk.OptionMenu(settings_frame, value, *options, command=on_option_selected)
+dropdown.grid(row=2, column=0, padx=0, pady=10)
+
 
 
 sv_ttk.set_theme("dark")
