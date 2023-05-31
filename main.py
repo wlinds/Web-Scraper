@@ -85,6 +85,16 @@ dropdown = ttk.OptionMenu(settings_frame, value, *options, command=on_option_sel
 dropdown.grid(row=2, column=0, padx=0, pady=10)
 
 
+def toggle_theme():
+    """Swap between dark and light theme"""
+    current_theme = sv_ttk.get_theme()
+    if current_theme == "dark":
+        sv_ttk.set_theme("light")
+    else:
+        sv_ttk.set_theme("dark")
+
+toggle_button = ttk.Button(settings_frame, text="Toggle Light Mode", command=toggle_theme)
+toggle_button.grid(row=3, column=0, padx=0, pady=10) # Place this anywhere, maybe in a new top nav bar?
 
 sv_ttk.set_theme("dark")
 root.resizable(False, False)
