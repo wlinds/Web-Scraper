@@ -57,34 +57,64 @@ url_entry.bind("<FocusOut>", on_focusout)
 divider = ttk.Separator(settings_frame, orient="horizontal")
 divider.grid(row=1, column=0, padx=0, pady=10, sticky="ew")
 
-selection_list = []
+selected_list = []
 
-def on_option_selected(event):
-    print(options)
-    selected_option = value.get()
+def on_option_selected(*args):
 
-    if selected_option in selection_list:
-        options[options.index(selected_option)] = selected_option.split()[1]
+    selected_item = var.get()
+    print(selected_item)
+
+    if selected_item not in selected_list:
+
+        selected_list.append(selected_item)
+
     else:
-        selection_list.append(f" \u2713 {selected_option}")
-        options[options.index(selected_option)] = f" \u2713 {selected_option}"
+
+        selected_list.remove(selected_item)
+
+    
 
     dropdown['menu'].delete(0, 'end')
+    for option in options:
+        dropdown['menu'].add_command(label=option, command=tk._setit(var, option))
 
     for option in options:
-        dropdown['menu'].add_command(label=option, command=tk._setit(options[0], option))
+        if option in selected_list:
+            dropdown["menu"].entryconfigure(option, label= option + " \u2713")
 
-    value.set("Selected option:")
-    print("Selected option:", selected_option)
-    print(options)
+    
+    var.set("Select elements")
 
-value = tk.StringVar()
-options = ["Select elements  ", "option-02", "option-03"]
+    root.after(1, open_menu)
 
-dropdown = ttk.OptionMenu(settings_frame, value, *options, command=on_option_selected)
+    
+def open_menu():
+    dropdown['state'] = 'readonly'
+    dropdown.event_generate('<Button-1>')
+    
+    
+var = tk.StringVar()
+options = ["option-01", "option-02", "option-03"]
+
+dropdown = ttk.OptionMenu(settings_frame, var, *(options), command=on_option_selected)
+dropdown.config(width=18)
 dropdown.grid(row=2, column=0, padx=0, pady=10)
 
+var.trace('w', on_option_selected)
 
+""" if selected_item not in selected_list:
+
+        new_item = f" \u2713 {selected_item}"
+        selected_list.append(new_item)
+        dropdown["menu"].entryconfigure(selected_item, label=new_item)
+        var.set(new_item)
+
+    else:
+
+        new_item = selected_item.replace("\u2713", "").strip()
+        selected_list.remove(selected_item)
+        dropdown["menu"].entryconfigure(new_item, label=new_item)
+        var.set(new_item) """
 
 sv_ttk.set_theme("dark")
 root.resizable(False, False)
