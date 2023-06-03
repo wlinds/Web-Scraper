@@ -57,64 +57,66 @@ url_entry.bind("<FocusOut>", on_focusout)
 divider = ttk.Separator(settings_frame, orient="horizontal")
 divider.grid(row=1, column=0, padx=0, pady=10, sticky="ew")
 
+# list of selected option from element dropdown.
 selected_list = []
 
+# fuction for handeling selection of elements.
 def on_option_selected(*args):
 
-    selected_item = var.get()
-    print(selected_item)
+    # removes the place holder index in option list.
+    if "" in options:
+        options.remove("")
 
+    # gets the value of the selected option.
+    selected_item = var.get()
+
+    # checks if the selected item is in the selected list.
     if selected_item not in selected_list:
 
+        # if not appends. 
         selected_list.append(selected_item)
 
     else:
-
+        
+        # if is removes.
         selected_list.remove(selected_item)
 
-    
-
+    # resets the dropdown menu.
     dropdown['menu'].delete(0, 'end')
+    
+    # adds back all the options to the menu. 
     for option in options:
         dropdown['menu'].add_command(label=option, command=tk._setit(var, option))
 
+    # edits the selected options with a checkmark.
     for option in options:
         if option in selected_list:
-            dropdown["menu"].entryconfigure(option, label= option + " \u2713")
-
+            dropdown["menu"].entryconfigure(option, label= "\u2713 " + option)
     
+    # resets the displayed option to "Select elements".
     var.set("Select elements")
-
+    # run open_menu() after 1 millisecond.
     root.after(1, open_menu)
 
-    
+
+# opens the option menu.
 def open_menu():
     dropdown['state'] = 'readonly'
     dropdown.event_generate('<Button-1>')
     
-    
+# var for the selected option.
 var = tk.StringVar()
-options = ["option-01", "option-02", "option-03"]
+options = ["", "option-01", "option-02", "option-03"] # list of options.
 
+# creats the dropdown and position it.
 dropdown = ttk.OptionMenu(settings_frame, var, *(options), command=on_option_selected)
 dropdown.config(width=18)
 dropdown.grid(row=2, column=0, padx=0, pady=10)
 
+# sets the display option.
+var.set("Select elements")
+# runs the on_option_selected() fuction if a option is selected.
 var.trace('w', on_option_selected)
-
-""" if selected_item not in selected_list:
-
-        new_item = f" \u2713 {selected_item}"
-        selected_list.append(new_item)
-        dropdown["menu"].entryconfigure(selected_item, label=new_item)
-        var.set(new_item)
-
-    else:
-
-        new_item = selected_item.replace("\u2713", "").strip()
-        selected_list.remove(selected_item)
-        dropdown["menu"].entryconfigure(new_item, label=new_item)
-        var.set(new_item) """
 
 sv_ttk.set_theme("dark")
 root.resizable(False, False)
