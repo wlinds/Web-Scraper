@@ -7,6 +7,7 @@ import requests
 
 root = tk.Tk()
 root.geometry("800x500")
+root.title("Web Scraper")
 
 url = tk.StringVar()
 
