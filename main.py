@@ -187,6 +187,17 @@ dropdown = ttk.OptionMenu(settings_frame, var, *(options), command=on_option_sel
 dropdown.config(width=18)
 dropdown.grid(row=3, column=0, padx=0, pady=10)
 
+def toggle_theme():
+    """Swap between dark and light theme"""
+    current_theme = sv_ttk.get_theme()
+    if current_theme == "dark":
+        sv_ttk.set_theme("light")
+    else:
+        sv_ttk.set_theme("dark")
+
+toggle_button = ttk.Button(settings_frame, text="Toggle Light Mode", command=toggle_theme)
+toggle_button.grid(row=3, column=0, padx=0, pady=10) # Place this anywhere, maybe in a new top nav bar?
+
 # sets the display option.
 var.set("Select elements")
 # runs the on_option_selected() fuction if a option is selected.
