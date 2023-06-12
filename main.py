@@ -196,7 +196,7 @@ def toggle_theme():
         sv_ttk.set_theme("dark")
 
 toggle_button = ttk.Button(settings_frame, text="Toggle Light Mode", command=toggle_theme)
-toggle_button.grid(row=3, column=0, padx=0, pady=10) # Place this anywhere, maybe in a new top nav bar?
+toggle_button.grid(row=4, column=0, padx=0, pady=10)
 
 # sets the display option.
 var.set("Select elements")
