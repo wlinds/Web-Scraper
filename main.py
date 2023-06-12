@@ -195,14 +195,19 @@ def toggle_theme():
     else:
         sv_ttk.set_theme("dark")
 
-toggle_button = ttk.Button(settings_frame, text="Toggle Light Mode", command=toggle_theme)
-toggle_button.grid(row=4, column=0, padx=0, pady=10)
+# Add menu (Works on macOS, have not checked Windows yet)
+menubar = tk.Menu(root)
+filemenu = tk.Menu(menubar, tearoff=0)
+filemenu.add_command(label="Toggle light mode", command=toggle_theme)
+menubar.add_cascade(label="Preferences", menu=filemenu)
+editmenu = tk.Menu(menubar, tearoff=0)
 
 # sets the display option.
 var.set("Select elements")
 # runs the on_option_selected() fuction if a option is selected.
 var.trace("w", on_option_selected)
 
+root.config(menu=menubar)
 sv_ttk.set_theme("dark")
 root.resizable(False, False)
 root.mainloop()
