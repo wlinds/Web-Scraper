@@ -4,6 +4,7 @@ import sv_ttk
 from tkinter import filedialog
 from bs4 import BeautifulSoup
 import requests
+import preferences as pref
 
 root = tk.Tk()
 root.geometry("800x500")
@@ -191,9 +192,13 @@ def toggle_theme():
     """Swap between dark and light theme"""
     current_theme = sv_ttk.get_theme()
     if current_theme == "dark":
-        sv_ttk.set_theme("light")
+        new_theme = "light"
     else:
-        sv_ttk.set_theme("dark")
+        new_theme = "dark"
+    sv_ttk.set_theme(new_theme)
+    config = pref.load_config()
+    config["THEME"] = new_theme
+    pref.save_config(config)
 
 # Add menu (Works on macOS, have not checked Windows yet)
 menubar = tk.Menu(root)
@@ -208,6 +213,9 @@ var.set("Select elements")
 var.trace("w", on_option_selected)
 
 root.config(menu=menubar)
-sv_ttk.set_theme("dark")
+
+current_theme = pref.get_theme()
+sv_ttk.set_theme(current_theme)
+
 root.resizable(False, False)
 root.mainloop()
