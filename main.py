@@ -174,10 +174,10 @@ def update_menu():
     # resets the dropdown menu.
     dropdown["menu"].delete(0, "end")
 
+    options.sort() # Sort alphabetically
     # adds back all the options to the menu.
     for option in options:
         dropdown["menu"].add_command(label=option, command=tk._setit(var, option))
-
 
 # var for the selected option.
 var = tk.StringVar()
